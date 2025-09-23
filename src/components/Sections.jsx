@@ -132,7 +132,7 @@ export const Works = ({ username = siteConfig.github.username, repos = siteConfi
           pauseBetweenAnimations={1.1}
         />
       </h2>
-      <p style={{ marginTop: 0, opacity: 0.85 }}>Pulling cards directly from GitHub.</p>
+  <p style={{ marginTop: 0, opacity: 0.85 }}>Highlights from my GitHub repositories.</p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 18 }}>
         {repos.map((r) => (
           <GitHubCard key={r} repoFullName={`${username}/${r}`} />
