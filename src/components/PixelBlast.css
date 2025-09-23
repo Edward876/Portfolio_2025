@@ -1,0 +1,13 @@
+.pixel-blast-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1; /* keep behind all content */
+  pointer-events: none; /* allow interactions with content while keeping visual interactivity via window listeners */
+}
+
+.pixel-blast-container canvas {
+  display: block;
+}

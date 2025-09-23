@@ -1,0 +1,8 @@
+.scramble-block p {
+  margin: 0;
+}
+
+.scramble-char {
+  display: inline-block;
+  will-change: contents;
+}

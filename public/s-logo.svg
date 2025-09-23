@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#1b153a"/>
+      <stop offset="70%" stop-color="#100e22"/>
+      <stop offset="100%" stop-color="#0e0e14"/>
+    </radialGradient>
+    <linearGradient id="sGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7a6eea"/>
+      <stop offset="100%" stop-color="#9d7cff"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="400" height="400" rx="80" fill="url(#bgGrad)"/>
+  <!-- Stylized S made of a single rounded stroke -->
+  <path d="M140 110
+           C140 80 200 70 230 90
+           C260 110 260 150 220 165
+           L185 178
+           C140 195 140 240 175 260
+           C210 280 262 270 270 240" 
+        fill="none" stroke="url(#sGrad)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <!-- Subtle inner highlight -->
+  <path d="M150 115
+           C150 92 198 86 222 100
+           C246 114 248 144 214 156" 
+        fill="none" stroke="#d9d4ff" stroke-opacity="0.25" stroke-width="10" stroke-linecap="round"/>
+</svg>

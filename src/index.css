@@ -1,0 +1,26 @@
+:root {
+  color-scheme: dark;
+  --bg: #0e0e14;
+  --text: #e7e7ff;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  /* Allow smooth scroll engines to reach past fixed bottom overlays */
+  scroll-padding-bottom: 10rem;
+}
+
+a { color: inherit; }
+
+/* Section rhythm */
+section, header { position: relative; }
+
+/* Subtle text helpers */
+.muted { opacity: .75; }
