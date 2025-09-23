@@ -1,0 +1,13 @@
+.decrypt-text {
+  display: inline-block;
+  line-height: 1.25; /* lock a stable line-height */
+  vertical-align: baseline;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent accidental wrapping while animating (keeps height stable). */
+@media (max-width: 820px) {
+  .decrypt-text { white-space: nowrap; }
+}

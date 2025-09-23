@@ -9,6 +9,9 @@ import ScrambledText from './ScrambledText';
 import SpotlightCard from './SpotlightCard';
 import PixelCard from './PixelCard';
 import ProfileCard from './ProfileCard';
+import SkillIcon from './SkillIcon';
+import './Sections.css';
+import { useEffect, useState } from 'react';
 
 const roles = siteConfig.roles;
 
@@ -42,9 +45,29 @@ export const PageScaffold = ({ children }) => (
   </div>
 );
 
-export const Hero = () => (
-  <header style={{ display: 'grid', placeItems: 'center', padding: '7rem 1rem 5rem' }}>
-    <div style={{ maxWidth: 1100, width: '100%', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 32 }}>
+export const Hero = () => {
+  const ASCII_SET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const KANA_SET = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789/+=-*';
+  const [scrambleSet, setScrambleSet] = useState(ASCII_SET);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(max-width: 820px)');
+    const apply = () => setScrambleSet(mq.matches ? KANA_SET : ASCII_SET);
+    apply();
+    try {
+      mq.addEventListener('change', apply);
+      return () => mq.removeEventListener('change', apply);
+    } catch {
+      // Safari
+      mq.addListener(apply);
+      return () => mq.removeListener(apply);
+    }
+  }, []);
+
+  return (
+  <header className="hero" style={{ display: 'grid', placeItems: 'center', padding: '7rem 1rem 5rem' }}>
+    <div className="hero-grid" style={{ maxWidth: 1100, width: '100%', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 32 }}>
       <div style={{ position: 'relative' }}>
         <div style={{ marginBottom: 8 }}>
           <FuzzyText fontSize={'clamp(1.6rem, 5vw, 3.2rem)'} fontWeight={800} color={'#eae7ff'} baseIntensity={0.1} hoverIntensity={0.28} paddingX={0} paddingY={0}>
@@ -55,7 +78,15 @@ export const Hero = () => (
           </FuzzyText>
         </div>
         <div style={{ marginTop: 10, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', color: '#a7ffef', fontSize: 'clamp(1.1rem, 2.6vw, 1.5rem)' }}>
-          <DecryptText items={roles} interval={2000} glitchDuration={900} order="random" avoidImmediateRepeat startIndex={0} />
+          <DecryptText
+            items={roles}
+            interval={2800}
+            glitchDuration={1500}
+            order="random"
+            avoidImmediateRepeat
+            startIndex={0}
+            scrambleCharset={'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789/+=-*'}
+          />
         </div>
         <div style={{ marginTop: 18, maxWidth: 680, opacity: 0.9, fontSize: 'clamp(1.05rem, 2.2vw, 1.3rem)' }}>
           <ScrambledText radius={16} duration={1.0} scrambleChars={'.:'}>
@@ -66,13 +97,13 @@ export const Hero = () => (
             always eager to collaborate, learn, and share knowledge to drive impactful advancements in the tech world.
           </ScrambledText>
         </div>
-        <div style={{ display: 'flex', gap: 12, marginTop: 18 }}>
+        <div className="hero-actions" style={{ display: 'flex', gap: 12, marginTop: 18 }}>
           <a href="#contact" style={btnStylePrimary}>Contact</a>
           <a href="#works" style={btnStyleGhost}>View Work</a>
         </div>
       </div>
       <div style={{ display: 'grid', placeItems: 'center' }}>
-        <div style={{ width: 240 }}>
+        <div className="profile-card-wrap" style={{ width: 240 }}>
           <ProfileCard
             avatarUrl={siteConfig.avatarUrl}
             name={siteConfig.name}
@@ -100,6 +131,7 @@ export const Hero = () => (
     />
   </header>
 );
+};
 
 const btnStylePrimary = {
   padding: '10px 16px',
@@ -122,7 +154,7 @@ const btnStyleGhost = {
 };
 
 export const Works = ({ username = siteConfig.github.username, repos = siteConfig.github.repos }) => (
-  <section id="works" style={{ padding: '5rem 1rem' }}>
+  <section id="works" className="section-pad" style={{ padding: '5rem 1rem' }}>
     <div style={{ maxWidth: 1100, margin: '0 auto' }}>
       <h2 style={{ margin: '0 0 1.5rem', fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 900 }}>
         <TrueFocus
@@ -132,8 +164,8 @@ export const Works = ({ username = siteConfig.github.username, repos = siteConfi
           pauseBetweenAnimations={1.1}
         />
       </h2>
-  <p style={{ marginTop: 0, opacity: 0.85 }}>Highlights from my GitHub Repositories.</p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 18 }}>
+      <p className="works-subtitle" style={{ marginTop: 0, opacity: 0.85 }}>Highlights from my GitHub repositories.</p>
+      <div className="works-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 18 }}>
         {repos.map((r) => (
           <GitHubCard key={r} repoFullName={`${username}/${r}`} />
         ))}
@@ -143,7 +175,7 @@ export const Works = ({ username = siteConfig.github.username, repos = siteConfi
 );
 
 export const SkillsCerts = () => (
-  <section id="skills" style={{ padding: '5rem 1rem' }}>
+  <section id="skills" className="section-pad" style={{ padding: '5rem 1rem' }}>
     <div style={{ maxWidth: 1100, margin: '0 auto' }}>
       <h2 style={{ margin: '0 0 1.5rem', fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 900 }}>
         <TrueFocus
@@ -153,16 +185,19 @@ export const SkillsCerts = () => (
           pauseBetweenAnimations={1.1}
         />
       </h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 8 }}>
+      <div className="skills-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 8 }}>
         {[
           'JavaScript','Node.js','Express','Python','NumPy','pandas','TensorFlow','PyTorch','YOLO','Kaggle','Linux','OpenCV'
         ].map((skill, i) => (
           <PixelCard key={skill} variant={i % 3 === 0 ? 'blue' : i % 3 === 1 ? 'yellow' : 'pink'}>
-            <span className="pixel-skill-label">{skill}</span>
+            <span className="pixel-skill-label">
+              <SkillIcon name={skill} size={16} />
+              <span className="pixel-skill-text">{skill}</span>
+            </span>
           </PixelCard>
         ))}
       </div>
-      <div style={{ marginTop: 22, display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))' }}>
+      <div className="certs-grid" style={{ marginTop: 22, display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))' }}>
         {certificates.map((c) => (
           <SpotlightCard key={c.title} spotlightColor="rgba(122, 110, 234, 0.18)">
             <strong>{c.title}</strong>
@@ -184,7 +219,7 @@ export const SkillsCerts = () => (
 );
 
 export const Contact = () => (
-  <section id="contact" style={{ padding: '5rem 1rem 7rem' }}>
+  <section id="contact" className="section-pad" style={{ padding: '5rem 1rem 7rem' }}>
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
       <h2 style={{ margin: '0 0 1.5rem', fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 900 }}>
         <TrueFocus
@@ -195,7 +230,7 @@ export const Contact = () => (
         />
       </h2>
       <p style={{ opacity: 0.9 }}>Open to collaborations, research, and freelance. Reach me via:</p>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 18 }}>
+      <div className="contact-links" style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 18 }}>
         {siteConfig.contacts?.whatsapp && (
           <a
             href={`https://wa.me/${siteConfig.contacts.whatsapp.replace(/[^\\d]/g, '')}`}

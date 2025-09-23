@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import './DecryptText.css';
 
-const KANA = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789/+=-*';
+// Use ASCII-only scramble characters to avoid font fallback that can change line-height
+const ASCII_SCRAMBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+[]{}<>?/|-=+';
 
 function randRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -14,7 +16,8 @@ const DecryptText = ({
   avoidImmediateRepeat = true,
   startIndex,
   className,
-  style
+  style,
+  scrambleCharset
 }) => {
   const [ix, setIx] = useState(0);
   const [out, setOut] = useState('');
@@ -47,7 +50,10 @@ const DecryptText = ({
         const reveal = i / len <= p;
         const target = toRef.current[i] || '';
         if (reveal) res += target;
-        else res += KANA[randRange(0, KANA.length - 1)] || ' ';
+        else {
+          const pool = scrambleCharset && scrambleCharset.length ? scrambleCharset : ASCII_SCRAMBLE;
+          res += pool[randRange(0, pool.length - 1)] || ' ';
+        }
       }
       setOut(res);
       if (p < 1) rafRef.current = requestAnimationFrame(loop);
@@ -87,8 +93,9 @@ const DecryptText = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, interval, glitchDuration, order, avoidImmediateRepeat, startIndex]);
 
+  const cn = ["decrypt-text", className].filter(Boolean).join(' ');
   return (
-    <span className={className} style={style} aria-live="polite">{out}</span>
+    <span className={cn} style={style} aria-live="polite">{out}</span>
   );
 };
 

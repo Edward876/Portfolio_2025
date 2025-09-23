@@ -42,4 +42,11 @@
   font-weight: 700;
   text-transform: none;
   font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pixel-skill-text {
+  display: inline-block;
 }

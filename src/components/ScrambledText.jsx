@@ -26,9 +26,14 @@ const ScrambledText = ({
     }
   }, [children]);
 
-  const chars = useMemo(() =>
-    text.split('').map((ch) => (ch === ' ' ? '\u00A0' : ch)),
-  [text]);
+  // Split into words to prevent mid-word wrapping; preserve spaces as separate entries
+  const words = useMemo(() => {
+    const parts = text.split(/(\s+)/); // keep spaces
+    return parts.map((part) => ({
+      isSpace: /^\s+$/.test(part),
+      chars: part.split('')
+    }));
+  }, [text]);
 
   useEffect(() => {
     const spans = charRefs.current;
@@ -37,7 +42,7 @@ const ScrambledText = ({
         span.dataset.orig = span.textContent;
       }
     });
-  }, [chars.length]);
+  }, [words]);
 
   useEffect(() => {
     const tick = () => {
@@ -92,17 +97,25 @@ const ScrambledText = ({
 
   return (
     <div ref={rootRef} className={`scramble-block ${className}`} style={style}>
-      <p>
-        {chars.map((ch, i) => (
-          <span
-            // eslint-disable-next-line react/no-array-index-key
-            key={i}
-            ref={(el) => (charRefs.current[i] = el)}
-            className="scramble-char"
-          >
-            {ch}
-          </span>
-        ))}
+      <p style={{ wordBreak: 'normal', overflowWrap: 'anywhere' }}>
+        {words.map((w, wi) =>
+          w.isSpace ? (
+            // preserve original spaces
+            <span key={`sp-${wi}`} aria-hidden="true">{w.chars.join('')}</span>
+          ) : (
+            <span key={`w-${wi}`} className="scramble-word">
+              {w.chars.map((ch, ci) => (
+                <span
+                  key={`c-${wi}-${ci}`}
+                  ref={(el) => (charRefs.current[`${wi}-${ci}`] = el)}
+                  className="scramble-char"
+                >
+                  {ch}
+                </span>
+              ))}
+            </span>
+          )
+        )}
       </p>
     </div>
   );

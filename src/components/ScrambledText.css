@@ -3,6 +3,11 @@
 }
 
 .scramble-char {
-  display: inline-block;
+  display: inline;
   will-change: contents;
+}
+
+.scramble-word {
+  display: inline-block;
+  white-space: nowrap; /* prevent breaking inside words */
 }
