@@ -12,6 +12,7 @@ import ProfileCard from './ProfileCard';
 import SkillIcon from './SkillIcon';
 import './Sections.css';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const roles = siteConfig.roles;
 
@@ -97,9 +98,10 @@ export const Hero = () => {
             always eager to collaborate, learn, and share knowledge to drive impactful advancements in the tech world.
           </ScrambledText>
         </div>
-        <div className="hero-actions" style={{ display: 'flex', gap: 12, marginTop: 18 }}>
+        <div className="hero-actions" style={{ display: 'flex', gap: 12, marginTop: 18, flexWrap: 'wrap' }}>
           <a href="#contact" style={btnStylePrimary}>Contact</a>
           <a href="#works" style={btnStyleGhost}>View Work</a>
+          <Link to="/blogs" style={{ ...btnStyleGhost, textDecoration: 'none' }}>Blogs</Link>
         </div>
       </div>
       <div style={{ display: 'grid', placeItems: 'center' }}>

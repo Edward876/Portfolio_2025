@@ -1,11 +1,20 @@
 import Sections from './components/Sections';
 import BlobCursor from './components/BlobCursor';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Blogs from './pages/Blogs';
+import BlogPost from './pages/BlogPost';
 
 export default function App() {
   return (
     <>
-      <Sections />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Sections />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blogs/:slug" element={<BlogPost />} />
+        </Routes>
+      </BrowserRouter>
       <BlobCursor
         blobType="circle"
         fillColor="#5227FF"
